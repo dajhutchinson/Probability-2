@@ -1,0 +1,539 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\begin{document}
+
+\pagestyle{fancy}
+\setlength\parindent{0pt}
+\allowdisplaybreaks
+
+\renewcommand{\headrulewidth}{0pt}
+
+% Cover page title
+\title{Probability 2 - Notes}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+% Header
+\fancyhead[L]{Dom Hutchinson}
+\fancyhead[C]{Probability 2 - Notes}
+\fancyhead[R]{\today}
+
+% enumerate uses roman
+\setlist[enumerate,1]{label=\roman*)}
+
+% Counters
+\newcounter{definition}[section]
+\newcounter{example}[section]
+\newcounter{notation}[section]
+\newcounter{proof}[section]
+\newcounter{proposition}[section]
+\newcounter{remark}[section]
+\newcounter{theorem}[section]
+
+% commands
+\newcommand{\dotprod}[0]{\boldsymbol{\cdot}}
+\newcommand{\cosech}[0]{\mathrm{cosech}\ }
+\newcommand{\cosec}[0]{\mathrm{cosec}\ }
+\newcommand{\sech}[0]{\mathrm{sech}\ }
+\newcommand{\expect}[0]{\mathbb{E}}
+\newcommand{\nats}[0]{\mathbb{N}}
+\newcommand{\prob}[0]{\mathbb{P}}
+\newcommand{\reals}[0]{\mathbb{R}}
+\newcommand{\sigmafield}[0]{\mathcal{F}}
+\newcommand{\nb}[0]{\underline{N.B.} -}
+\newcommand{\ie}[0]{\textit{i.e. }}
+\newcommand{\eg}[0]{\textit{e.g. }}
+
+\newcommand{\definition}[1]{\stepcounter{definition} \textbf{Definition \arabic{section}.\arabic{definition}\ - }\textit{#1}\\}
+\newcommand{\example}[1]{\stepcounter{example} \textbf{Example \arabic{section}.\arabic{example}\ - }\textit{#1}\\}
+\newcommand{\notation}[1]{\stepcounter{notation} \textbf{Notation \arabic{section}.\arabic{notation}\ - }\textit{#1}\\}
+\newcommand{\proof}[1]{\stepcounter{proof} \textbf{Proof \arabic{section}.\arabic{proof}\ - }\textit{#1}\\}
+\newcommand{\Proof}[1]{\stepcounter{proof} \textbf{Proof \arabic{section}.\arabic{proof}\ - }\textit{#1}}
+\newcommand{\proposition}[1]{\stepcounter{proposition} \textbf{Proposition \arabic{section}.\arabic{proposition}\ - }\textit{#1}\\}
+\newcommand{\remark}[1]{\stepcounter{remark} \textbf{Remark \arabic{section}.\arabic{remark}\ - }\textit{#1}\\}
+\newcommand{\theorem}[1]{\stepcounter{theorem} \textbf{Theorem \arabic{section}.\arabic{theorem}\ - }\textit{#1}\\}
+\newcommand{\Theorem}[1]{\stepcounter{theorem} \textbf{Theorem \arabic{section}.\arabic{theorem}\ - }\textit{#1}}
+
+\tableofcontents
+
+% Start of content
+\newpage
+
+\section{General}
+
+\definition{$\sigma$-Field, $\sigmafield$}
+A \textit{$\sigma$-Field } is a collection of \underline{subsets} of the \textit{Sample Space} which can be used to establish a formal definition of the probability distribution of the \textit{Sample Space}. $\sigmafield$ is a \textit{$\sigma$-Field} if
+\begin{enumerate}
+	\item $\emptyset\in\sigmafield$;
+	\item $\forall\ \{A_1,A_n\}\subseteq\sigmafield,\ \bigcup\limits_{i=1}^\infty A_i\in\sigmafield$; and,
+	\item $\forall\ A\in\sigmafield,\ A^c\in\sigmafield$.
+\end{enumerate}
+The events, $A_i\in\sigmafield$, are said to be \textit{$\sigmafield$-Measurable}. $\emptyset\in\sigmafield$ is known as the \textit{Impossible Event} \& $\Omega\in\sigmafield$ is known as the \textit{Certain Event}. For a collection of events, $\mathcal{C}$, $\sigma(\mathcal{C})$ is the smallest \textit{$\sigma$-Field} that contains $\mathcal{C}$.\\
+
+\Theorem{Properties of $\sigma$-Fields}
+\begin{enumerate}
+	\item $\forall\ \sigma$-fields $\sigmafield_1,\sigmafield_2,\ \sigmafield_1\cap\sigmafield_2$ is a $\sigma$-field.
+	\item $2^{\Omega}$ is a $\sigma$-field.
+\end{enumerate}
+
+\definition{Probability Measure, $\prob$}
+A \textit{Probability Measure} is a function $\prob:\sigmafield\to[0,1]$ which satisfies
+\begin{enumerate}
+	\item $\prob(\emptyset)=0\ \&\ \prob(\Omega)=1$; and,
+	\item If $A_1,\dots,A_n\in\sigmafield$ are pair-wise disjoint then $\prob\left(\bigcup\limits_{i=1}^nA_i\right)=\sum\limits_{i=1}^n\prob(A_i)$. ($\sigma$-Additivity)
+\end{enumerate}
+
+\definition{Probability Space}
+A \textit{Probability Space} is a triple formed of a \textit{Sample Space}, $\Omega$; a \textit{$\sigma$-Field}, $\sigmafield$, on $\Omega$; and, a \textit{Probability Measure}, $\prob$, on $\sigmafield$. Denoted $(\Omega,\sigmafield,\prob)$.\\
+
+\definition{Random Variable}
+A \textit{Random Variable}, $X$ on a \textit{Probability Space} $(\Omega,\sigmafield,\prob)$ is a function $X:\Omega\to\reals$.\\
+
+\definition{Filtration, $\sigmafield_t$}
+A \textit{Filtration} is a family of \textit{$\sigma$-Fields}, $\sigmafield_t=\{\sigmafield_t:t\geq0\}$ st $\sigmafield_{t_1}\subset\sigmafield_{t_2}\ \forall\ 0\leq t_1\leq t_2$.\\
+
+\definition{Stochastic Process}
+A \textit{Stochastic Process} is a collection of random variables which represent the state of a system at different times (\eg $X=\{X_t\}_{t\in\Delta}$ with $\Delta\subseteq\reals$ where $X_t$ is the state of the system at time $t$). The \textit{Stochastic Process} has an associated \textit{Filtration}, $\sigmafield_t$, st $X_t$ is \textit{$\sigmafield_t$-Measureable} ($X$ is \textit{Adapted} to $\sigmafield_t$). The \textit{State Space} of a \textit{Stochastic Process} is the set of all possible values at a specific time.\\
+\nb \textit{Stochastic Processes} can be in discrete \underline{or} continuous time.\\
+
+\definition{Time-Homogenous}
+A \textit{Stochastic Process}, $X$, is \textit{Time-Homogenous} if $\prob(X_{n+1}=j|X_n=i)$ depends on $i\ \&\ j$, but \underline{not} on $n$.
+
+\definition{Sequences}
+Let $X=A_1,A_2,\dots$ be a sequence of events. If $A_n\subseteq A_{n+1}\ \forall\ n\in\nats$ then $X$ (\ie $A_n$ occurs $\Rightarrow A_{n+1}$ occurs) is an \textit{Increasing Sequence}. If $A_{n+1}\subseteq A_n\ \forall\ n\in\nats$ then $X$ is a \textit{Decreasing Sequence}.\\
+
+\theorem{Continuity of Probability}
+Let $A_1,A_2,\dots$ be an \textit{Increasing Sequence} of events. Define $A:=\bigcup_{n=1}^\infty A_n$. Then
+$$\prob(A)=\lim_{n\to\infty}\prob(A_n)$$
+Let $B_1,B_2,\dots$ be a \textit{Decreasing Sequence} of events. Define $B:=\bigcap_{n=1}^\infty B_n$. Then
+$$\prob(B)=\lim_{n\to\infty}\prob(B_n)$$
+
+\section{Markov Chains}
+
+\definition{Markov Property}
+A \textit{Stochastic Process} $X:=\{X_n\}_{n\in\nats}$ or $X:=\{X_t\}_{t\in\reals}$ has the \textit{Markov Property} if values only depend on the value immediately before them (in time) and nothing earlier. Equivalently
+\[\begin{array}{rcl}
+X_{n+1}&=&f(X_n)\\
+\prob(X_{n+1}=x_{n+1}|\sigmafield_n)&=&\prob(X_{n+1}=x_{n+1}|X_n=x_n)\\
+\prob(X_{n+1}=x_{n+1}|X_n=x_n,\dots,X_0=x_0)&=&\prob(X_{n+1}=x_{n+1}|X_n=x_n)\\
+\prob(X_t=j|\sigmafield_s)&=&\prob(X_t=j|X_s)
+\end{array}\]
+
+\definition{Markov Chain}
+A \textit{Markov Chain} is a state space process with the \textit{Markov Property}.\\
+
+\definition{Transition Matrix}
+A \textit{Transition Matrix} are a \textit{Stochastic Matrix} which describes the probabiltiy of transitioning between each state. For a \textit{Continuous Time} process we define different \textit{Transition Matrices} for each time $t$.\\
+\begin{tabular}{ll}
+Discrete&$[P]_{ij}:=p_{ij}$\\
+Continuous&$[P_t]_{ij}:=p_{ij}(t)=\prob(X_t=j|X_0=i)$.
+\end{tabular}\\
+
+\definition{Stationary Distributions}
+Let $X:=\{X_n\}_{n\in\nats}$ (or continuous) be a \textit{Markov Chain}, on state space $S$, with transition matrix $P$ . Let $\pi$ be a \underline{horizontal vector}. $\pi$ is a \textit{Statiomnary Distribution} of $X$ if
+\begin{enumerate}
+	\item $\pi_j\geq0\ \forall\ j\in S$;
+	\item $\sum_{j\in S}\pi_j=1$;
+	\item $\pi=\pi P_t\ \mathrm{or}\ \pi=\pi P\Leftrightarrow\pi_j=\sum_{i\in S}\pi_ip_{ij}\ \forall\ j\in S$
+\end{enumerate}
+An \textit{Irreducible Markov Chain} on $S$ has a \textit{Stationary Distribution} iff all the states in $S$ are positive reccurent. In this case $\pi_i=\frac{1}{m_{ii}}$ (For continuous time this is equivalent to $p_{ij}(t)\xrightarrow{t\to\infty}\pi_j$).\\
+\nb $\pi$ is a stationary distribution for $G$ iff $\pmb{\nu} H=\pmb{\nu}$ where $H$ is transition matrix for jump chain \& $\nu_i=-\pi_ig_{ii}$.
+
+\subsection{Discrete Time}
+
+\definition{Communication}
+A state $i\in S$ \textit{Communicates} with state $j\in S$ ($i\to j$) if $\exists\ n\in\nats\ st\ p_{ij}(n)>0$. State $i,j\in S$ \textit{Intercommunicate} if $i\to j\ \&\ j\to i$. If two states \textit{Intercommunicate} and one is \textit{Recurrent}, then both are \textit{Recurrent}. \textit{Intercommunication} is an \textit{Equivalence Relation}. The state space can be partitioned into \textit{Communicating Classes} $\{E_1,\dots,E_n\}$ st $\forall\ i,j\in E_k\ i\leftrightarrow j$.\\
+
+\definition{Closed \& Irreducible}
+Let $C\subseteq S$ be a set of states. $C$ is \textit{Closed} if $p_{ij}=\ \forall\ i\in C,\ j\notin C$. $C$ is \textit{Irreducible} if $i\leftrightarrow k\ \forall\ i,j\in C$. A \textit{Closed, Singleton Set} $\{i\}$ is called an \textit{Absorbing State}. If $C$ is a \textit{Communicating Class} and is not clossed then all states in $C$ are \textit{Transient}.\\
+
+\remark{Partitioning State Space}
+The state space can be uniquely partition st $S=T\cup C_1\cup\dots\cup C_n$ where $T$ is a set of \textit{Transient} states \& each $C_i$ is an \textit{Irreducible-Closed} set of \textit{Recurrent} States.\\
+
+\definition{Period}
+Let $j\in S$ be a state st $p_{jj}(n)>0,\ n\in\nats$. Define $\mathcal{N}_j:=\{n\geq1:p_{jj}(n)>0\}$. The \textit{period} of $j$ is defined as $d_j:=\mathrm{gcd}(\mathcal{N}_j)$, if $d_j=1$ then $j$ is said to be \textit{Aperiodic}. For a \textit{Communicating Class} $C\subseteq S,\ d_i=d_j\ \forall\ i,j\in C$.\\
+
+\theorem{Stationary Distribution \& Transition Probabilities}
+Let $X:=\{X_n\}_{n\in\nats}$ be an irreducible aperioic \textit{Markov Chain}, with \textit{Stationary Distribution} $\pi$. Then
+$$p_{ij}(n)\xrightarrow{n\to\infty}\pi_j\ \forall\ i,j\in S$$
+
+\theorem{Chapman-Kolmogorov Equation}
+$$p_{ij}(n)=\sum_{k\in S}p_{ik}(r)p_{kj}(n-r)\ \forall\ i,j\in S,\ n\in\nats\ \&\ r\in[0,n]$$
+
+\subsection{Continuous Time}
+
+\definition{Generator Matrix}
+A \textit{Generator Matrix} is an alternative way of displaying continuous-time \textit{Markov Chains}. A \textit{Generator Matrix} $G$ is defined st
+\begin{enumerate}
+	\item $g_{ij}\geq0\ \forall\ i\neq j$;
+	\item $g_{ii}=-\sum_{j\neq i}g_{ij}$.
+\end{enumerate}
+
+\definition{Jump Chain}
+A \textit{Jump Chain} $\{Y_n\}_{n\in\nats}$, for a \textit{Continuous-Time Markov Chain} $\{X_t\}_{t\in\reals^{\geq0}}$, is a \textit{Discrete-Time Markov Chain} which describes the different states $X_t$ moves to. $Y_n:=X_{S_n}$ where $S_n$ is an arrival time.\\
+
+\definition{Recurrence \& Transience - Continuous Time}
+A state $i\in S$ is \textit{Recurrent} if $\prob(\{t\geq0:X_t=i\}\mathrm{\ is\ unbounded}|X_0=i)=1$. A state is only recurrent in continuous time iff it is recurrent for the \textit{Jump Chain} $Y_n$.
+A state $i\in S$ is \textit{Transient} if $\prob(\{t\geq0:X_t=i\}\mathrm{\ is\ unbounded}|X_0=i)=0$.\\
+
+\definition{Poisson Process, $N_t$}
+Let $N_t$ be the number of events to have occured by time $t$. Then $\{N_t\}_{t\in\reals^{\geq0}}$ is a \textit{Poisson Process} with rate $\lambda$ if
+\begin{enumerate}
+	\item $N_0=0$;
+	\item $N_t\in\nats\ \forall\ t\in\reals^{\geq0}$;
+	\item $N_{t+s}-N_t$ depends on $s$ only (Stationary Increments);
+	\item $N_{t_2}-N_{t_1},\dots,N_{t_n}-N_{t_{n-1}}$ are all independent. (Independent Increments);
+	\item $\forall\ t,h>0$ we have
+	\[\begin{array}{rcl}
+	\prob(N_{t+h}-N_t<0)&=&0\\
+	\prob(N_{t+h}-N_t=0)&=&1-\lambda h+o(h)\\
+	\prob(B_{t+h}-N_t=1)&=&\lambda+o(h)\\
+	\prob(N_{t+h}-N_t>1)&=&o(h)
+	\end{array}\]
+\end{enumerate}
+For $t\geq0,\ N_t\sim\mathrm{Po}(\lambda t)\ \implies\expect(N_t)=\mathrm{Var}(N_t)=\lambda t$. The filtration $\sigmafield_t$ of a \textit{Poisson process} is generated by the process itself.\\
+
+\definition{Arrival Times}
+For a \textit{Poisson Process} $\{N_t\}_{t\in\reals^{\geq0}}$ we define $S_i:=\inf\{t\geq0:N_t=i\}$ to be the \textit{Arrival Time} of the occurence of the $i^{th}$ event. Since $N_t\sim\mathrm{Po}(\lambda t)$ then $S_1\sim\mathrm{Exp}(\lambda)$. Since $S_n=\sum_{j=1}^iT_j$ then $S_i\sim\Gamma(i,\lambda)$.\\
+
+\definition{Inter-Arrival Times}
+For a \textit{Poisson Process} $\{N_t\}_{t\in\reals^{\geq0}}$ we define $T_1=S_1,\ T_i=S_i-S_{i-1}\ \forall\ i\in\nats^{\geq2}$ to be the \textit{Inter-Arrival Time} of events. \textit{Inter-Arrival Times} are independent of each other. $T_i\sim\mathrm{Exp}(\lambda)$.\\
+
+\proposition{Waiting Times}
+Let $T$ be a random variable that models how long customers have to wait. We want $T$ to have the following property $\prob(T\in(t,t+h]|T>t)=\lambda h+o(h)$ where $\lim_{h\to0}\frac{o(h)}{h}=0$ \& $\lambda$ is the average rate that customers are servered at. Thus $T$ is modelled by $T\sim\mathrm{Exp}(\lambda)$. If we have multiple \textit{servers} who serve customers at different rates we can model them as indepdent random variables $T_i\sim\mathrm{Exp}(\lambda_i)$ where $\lambda_i$ is the rate of the $i^{th}$ server.\\
+
+\proposition{First Expected}
+Suppose we have $n$ servers whose serving times $T_i\sim(\lambda_i)$. Then
+\[\begin{array}{rcl}
+\min(T_1,\dots,T_n)&\sim&\mathrm{Exp}\left(\sum_{i=1}^n\lambda_i\right)\\
+\prob\big(T_i=\min(T_1,\dots,T_n)\big)&=&\lambda_i\dfrac{1}{\sum_{i=1}^n\lambda_i}
+\end{array}\]
+
+\definition{Birth \& Death Processes}
+\textit{Birth Death Processes} are continuous time processes where we consider a population of indepdent individuals where population members either: give birth (increase population by $1$); or, die (decrease population by $1$). We define
+\begin{enumerate}
+	\item $N_t$ to be the population size at time $t$ (with $N_0=1$);
+	\item $p_n(t):=\prob(N_t=n)$;
+	\item $S_i:=\inf\{t\geq0:N_t=i\}$; and,
+	\item $T_i:=S_1-S_{i-1}$.
+\end{enumerate}
+
+\definition{Generalised Birth \& Death Process}
+A \textit{Continuous Time Stochastic Process}, $\{N_t\}_{t\in\reals^{\geq0}}$, is a \textit{Generalised Birth \& Death Process} if
+\begin{enumerate}
+	\item $N_t\in\nats\ \forall\ t\in\reals^{\geq0}$; and,
+	\item For $\lambda_n,\mu_n\geq0\ \forall\ n$ we have
+	\[\begin{array}{lcl}
+	\prob(N_{t+h}-N_t=\ \ 1|N_t=n)&=&\lambda_nh+o(h)\\
+	\prob(N_{t+h}-N_t=-1|N_t=n)&=&\mu_nh+o(h)\\
+	\prob(N_{t+h}-N_t=\ \ 0|N_t=n)&=&1-(\lambda_n+\mu_n)h+o(h)
+	\end{array}\]
+	\item \[\begin{array}{rcl}
+	p_n'(t)&=&\lambda_{n-1}p_{n-1}(t)-(\lambda_n+\mu_n)p_n(t)+\mu_{n+1}p_{n+1}(t)\ n\geq1\\
+	p_0'(t)&=&-\lambda_0p_0(t)+\mu_1p_1(t)
+	\end{array}\]
+\end{enumerate}
+
+\proposition{Pure Immigration}
+For a \textit{Birth \& Death Process} with a $\lambda_n=\lambda,\ \mu_n=0\ \forall\ n\in\nats$, for $\lambda\in[0,1]$, we have that $\{N_t\}_{t\in\reals^s}$ is a \textit{Poisson Process}.\\
+
+\proposition{Linear Birth Process (Yule Process)}
+The \textit{Yule Process} is the \textit{Linear Birth Process}. This is a \textit{Birth \& Death Process} where $\lambda_n=n\lambda,\ \mu_n=0\ \forall\ n\in\nats$ for $\lambda,\mu\in[0,1]$. Then
+\begin{enumerate}
+	\item $N_t\sim\mathrm{Geo}(e^{-\lambda t})$;
+	\item $p_n(t)=e^{-\lambda t}(1-e^{-\lambda t})^{n-1}$;
+	\item $\expect(S_i)\simeq\frac{1}{\lambda}\ln n$;
+	\item $T_i\sim\mathrm{Exp}(i\lambda)$;
+	\item $g_{ij}=\begin{cases}\mu&,j=i-1\\\lambda&,j=i+1\\-(\lambda+\mu)i&,j=i\\0&\mathrm{otherwise}\end{cases}$
+\end{enumerate}
+
+\proposition{Linear Birth \& Death Process}
+The \textit{Linear Birth \& Death Process} is a \textit{Birth \& Death Process} where $\lambda_n=n\lambda,\ \mu_n=n\mu\ \forall\ n\in\nats$ for $\lambda,\mu\in[0,1]$. Then
+\begin{enumerate}
+	\item $g_{ij}=\begin{cases}0&j<i-1\ \mathrm{or}\ j>i+1\\\mu i&h=i-1\\\lambda i&j=i+1\\-(\lambda+\mu)i&j=i\end{cases}$
+\end{enumerate}
+
+\proposition{Holding Times}
+Consider a \textit{Continous-Time Markov Chain} on state space $S$. Suppose the chain enters state $i\in S$ at time $t$, define $U:=\inf\{s\geq-:X_{t+s}\neq i\}\sim\mathrm{Exp}(\lambda_i)$ to be \textit{Holding Time} of the chain in state $i$. We define $H$ to be the matrix st $h_{ij}=\prob(X_{t+U}=j|X_t=i)$ (probability of transitioning to state $i$ from state $j$). Then $h_{ij}=-\frac{g_{ij}}{g_{ii}}=\frac{g_{ij}}{\lambda_i}$.\\
+
+\definition{Kolmogorov Equations}
+\begin{tabular}{lll}
+Forwards Equations&$P_t'=P_tG$ since $P_0=I\implies P_t=e^{tG}$\\
+Backwards Equations&$P_t'=GP_t$.
+\end{tabular}\\
+Further, we derive that
+$$\frac{d^k}{dt^k}P_t\bigg\vert_{t=0}=G^k\ \mathrm{for}\ k\geq0\implies g_{ij}=p_{ij}'(0)$$
+
+\section{Random Walks}
+
+\definition{Random Walk}
+A \textit{Random Walk} is a discrete-time stochastic process where the value of the process increases or decreases by $1$, only (it always changes value). \textit{Random Walk}s have the \textit{Markov Property}. \textit{Random Walk}s can be defined to include \textit{Absorbing Barriers} which are values that if the process ever achieves, the process stops.\\
+
+\definition{Probability of Visiting}
+Consider a time-homogenous stochastic process $X$ on state space $S$. Let $i,j\in S$ be a state. We define
+$$f_{ij}:=\prob(\mathrm{We\ will\ visit}\ j|X_0=i)\quad\&\quad f_{ij}(n):=\prob(X_n\ \mathrm{is\ first\ visit\ to\ }j|X_0=i)$$
+This can be equated with \textit{n-Step Transition Probabilities} as
+$$p_{ij}(n)=\sum_{m=1}^np_{jj}(n-m)f_{ij}(m)$$
+If we are guaranteed to return to a state $s\in S$ (\ie $f_{ss}=1$) then $s$ is \textit{Recurrent}, else (\ie if $f_{ss}<1$) $s$ is \textit{Transient}. A state $j$ is \textit{Recurrent} iff $P_{ij}(1)=\infty\ forall\ i$. If a state $j$ is \textit{Transient} then $p_{ij}(n)\xrightarrow{n\to\infty}0$.\\
+
+\proposition{Generating Functions}
+For \textit{n-Step Transition Probabilities}, $p_{ij}(n)$, \& \textit{First Passage Probabilities}, $f_{ij}(n)$, we define the following generating functions
+\[\begin{array}{lll}
+&P_{ij}(s)=\sum_{i=1}^\infty p_{ij}(n)s^n&\quad F_{ij}(s)=\sum_{n=1}^\infty f_{ij}(n)s^n\\
+\implies&P_{ij}(s)=\mathds{1}_{i=j}+F_{ij}(s)P_{jj}(s)
+\end{array}\]
+These can be used to relate $f_{ij}(n)$ with $p_{ij}(n)$.\\
+
+\proposition{Mean Time of First Passage}
+Consider a time-homogenous stochastic process $X$ on state space $S$. We can calculate the \textit{Mean Time of First Passage} from state $i\in S$ to state $j\in S$ as
+$$m_{ij}=\sum_{n=1}^\infty nf_{ij}(n)$$
+\nb $m_{ii}$ is called the \textit{Mean Time of Return}.\\
+
+\proposition{Gambler's Ruin}
+The \textit{Gambler's Ruin} is a common scenario used to demonstrate a \textit{Random Walk}. A gambler starts with $\pounds k$ \& stops gambling if they reach $\pounds 0$ or $\pounds N$ (\ie There are absorbing barries at $0$ \& $N$). Each time $\pounds 1$ is gambled \& either it is lost (with probability $1$) or $\pounds 1$ is won (with the bet returned), with probability $q:=1-p$.
+$$p_k:=\prob(\mathrm{Gambler\ ever\ ruined}|X_0=k)\implies p_k=p_{k+1}p+p_{k-1}q=\frac{\left(\frac{q}{p}\right)^k-\left(\frac{q}{p}\right)^N}{1-\left(\frac{q}{p}\right)^N}$$
+
+\theorem{Probability of Ruin against Upper Barrier}
+Let $p_k$ be the probability of ruin for a gambler starting at $\pounds k$ \& no upper barrier. Let $p_k^{(N)}$ be the probability of ruin for a gambler with an upper barrier at $N$. Then
+$$\lim_{N\to\infty}p_k^{(N)}=p_k$$
+
+\definition{Stopping Time}
+Let $X=\{X_n\}_{n\in\nats}$ be a \textit{Stochastic Process}. Non-negative integer-valued random variable $T$ is a \textit{Stopping Time Process} for $X$ if $\forall\ n\in\nats$ the event $\{T\leq n\}$ id determined by $X_0,\dots,X_n$ only. Often a \textit{Stopping Time} is an event where a first passage occurs.\\
+
+\theorem{Wald's Lemma}
+Let $Z_1,Z_2,\dots$ be a sequence of iid rv with $\expect(|Z_n|)<\infty$ \& $X_n:=\sum_{i=1}^nZ_i$. If $T$ is a \textit{Stopping Time Process} if $X=\{X_n\}_{n\in\nats}$ with $\expect(T)<\infty$. Then
+$$\expect(X_T)=\expect(Z_1)\expect(T)$$
+
+\section{Brownian Motion / Weiner Process}
+
+\definition{Simple Symmetric Random Walk}
+A \textit{Simple Symmtric Random Walk} is a process $S_1,S_2,\dots$ where $S_i=\sum_{j=1}^iY_j$ with $Y_1,Y_2,\dots$ being independent rvs which take values $\{-1,1\}$ with probability $\frac{1}{2}$.
+
+\definition{Brownian Motion}
+\textit{Brownian Motion} is a \textit{continuous-time stochastic process} which models random motion in continuous space $\reals^n,n\in\nats$.\\
+Let $\sigmafield_t$ be a filtration. An \textit{Adpated Stochastic Process} $W:=\{W_t\}_{t\geq-}$ is a \textit{Brownian Motion} if
+\begin{enumerate}
+	\item $W_0=x,\ x\in\reals$;
+	\item $W_{t+u}-W_t\sim\mathcal{N}(0,u)$ is independent of $\sigmafield_t\ \forall\ t,u\geq0$ ($\implies W_t\sim\mathcal{N}(0,t)$); and,
+	\item $t\mapsto W_t(\omega)$ is a continuous funciton of $t\ \forall\ \omega\in\Omega$.
+\end{enumerate}
+\nb $W$ is a \textit{Standard Brownian Motion} if $x=0$.\\
+
+\proposition{Constructing Brownian Motion from a Simple Symmetric Random Walk}
+By defining $X_t^n=\frac{1}{\sqrt{n}}S_{nt}$ for $t=\frac{j}{n}\in[0,1]$ (and linerly interpreting other values) we can show that as $n\to\infty\ X_t^n$ satisfies the definition for \textit{Brownian Motion}.
+
+\theorem{Transition Density of Brownian Motion}
+$$p(t,x,y)=\frac{1}{\sqrt{2\pi t}}e^{-\frac{(x-y)^2}{2t}}$$
+
+\proposition{Properties of a Standard Brownian Motion}
+Let $W$ be a \textit{Standard Brownian Motion}, then
+\begin{enumerate}
+	\item $\forall\ W_t\sim\mathcal{N}(0,t)\implies\expect(W_t)=0\ \&\ \mathrm{Var}(W_t)=t$.
+	\item $\forall\ 0\leq s\leq t\ \mathrm{Cov}(W_S,W_t)=0$.
+	\item $\prob\left(\sup_{t\geq0}W_t=\infty,\inf_{t\geq0}W_t=-\infty\right)=1$.
+	\item $-W_t$ is a \textit{Standard Brownian Motion}.
+	\item $X=\{X_t\}_{t\geq0}$ where $X_t:=W_{t+s}-W_{s}$ is a \textit{Standard Brownian Motion} for fixed $s>0$.
+	\item $X=\{X_t\}_{t\geq0}$ where $X_t:=\frac{1}{\sqrt{\alpha}}W_{\alpha t}$ is a \textit{Standard Brownian Motion} for fixed $s>0$/
+\end{enumerate}
+
+\definition{The Reflection Principle}
+Let $W_t$ be a \textit{Standard Brownian Motion}. Let $a\in\reals^{\geq0}$ and $\tau_a:=\inf\{t>0:W_t=a\}$. Define $\widetilde{W}_t=\begin{cases}W_t&\mathrm{for\ }t\leq\tau_a\\a-(W_t-a)&\mathrm{for\ }t>\tau_a\end{cases}$. Then $\widetilde{W}_t$ is a \textit{Standard Brownian Motion}.\\
+
+\proposition{Properties of First Passage Time}
+Let $W_t$ be a \textit{Standard Brownian Motion}. Let $a\in\reals^{\geq0}$ and $\tau_a:=\inf\{t>0:W_t=a\}$. Then
+\begin{enumerate}
+	\item $\prob(\tau_a\leq T)=2\prob(W_t>a)$.
+	\item $f_{\tau_a}(t)=\frac{|a|}{\sqrt{2\pi t^3}}e^{-\frac{a^2}{2t}}\ \mathrm{for}\ t>0$.
+	\item $\expect(\tau_a)=\infty$ for fixed $a\neq0$.
+\end{enumerate}
+
+\definition{Gaussian Process}
+A \textit{Gaussian Process} is a \textit{continuous-time stochastic process} with continuous sample paths (Set of possible values for a stochastic process). and finite dimenisonal distributions that are multivariate normal. A \textit{Gaussian Process} is completely determined by its mean function $\mu_t=\expect(X_t)$ \& auto-covariance function $\expect((X_s-\mu_s)(X_t-\mu_t))$.\\
+
+\section{Martingales}
+
+\definition{Discrete-Time Martingales}
+A \textit{Discrete-Time Martingale}, wrt a filtration $\sigmafield_n$ (often generated by the process itself), is a \textit{Stochastic Process} $Y:=\{Y_n\}_{n\in\nats}$ where $\forall\ n\in\nats$
+\begin{enumerate}
+	\item $\expect(|Y_n|)<\infty$;
+	\item $\expect(Y_{n+1}|\sigmafield_n)=Y_n$.
+\end{enumerate}
+
+\definition{Continuous-Time Martingales}
+A \textit{Continuous-Time Martingale}, wrt a filtration $\sigmafield_t$ (often generated by the process itself), is a \textit{Stochastic Process} $Y:=\{Y_n\}_{n\in\nats}$ where $\forall\ 0\leq s\leq t$
+\begin{enumerate}
+	\item $\expect(|Y_t|)<\infty$;
+	\item $\expect(Y_t|\sigmafield_s)=Y_s$.
+\end{enumerate}
+
+\definition{Supermartingale \& Submartingale}
+A \textit{\underline{Super}martingale} is a process where $\expect(Y_t|\sigmafield_s)\leq Y_s$.\\
+A \textit{\underline{Sub}martingale} is a process where $\expect(Y_t|\sigmafield_s)\geq Y_s$.\\
+
+\proposition{Properties of Martingales}
+Let $Y:=\{Y_n\}_{n\in\nats}$ be a \textit{Discrete-Time Martingale}. Note the following hold, with appropriate alterations, for \textit{Continuous-Time Martingale}s, submartingales \& supermartingales.
+\begin{enumerate}
+	\item $\expect(Y_{n+1})=\expect(\expect(Y_{n+1}|\sigmafield_n))=\expect(Y_n)$
+\end{enumerate}
+
+\remark{Stopped Martingales are still Martingales}
+
+\theorem{Stopped Supermartingales}
+Let $Y:=\{Y_n\}_{n\in\nats}$ be a \textit{Supermartingale} wrt $\sigmafield_n$. Let $T$ be a stoppping time of $Y$. Then $Z:=\{Z_n\}_{n\in\nats}$ with $Z_n:=Y_{T\wedge n}$ is a \textit{Supermartingale}.\\
+\nb A similar results holds for \textit{Continuous-Time Supermartingales}
+
+\theorem{Optional Stopping Theorem - Discrete Time}
+Let $Y:=\{Y_n\}_{n\in\nats}$ be a \textit{Discrete-Time Martingale} wrt $\sigmafield_n$, let $T$ be a stopping time of $\sigmafield_n$.\\
+If any of the following conditions holds then $\expect(Y_T)=\expect(Y_0)$
+\begin{enumerate}
+	\item $T$ is bounded (\ie $\exists\ K\in\reals^{\geq0}\ st\ prob(T<K)=1$).
+	\item $T$ is finite \underline{and} $\exists\ K>0\ st\ |Y_{T\wedge n}|<K\ \forall\ n\in\nats$.
+	\item $\expect(T)<\infty$ \underline{and} $\exists\ K>0\ st |Y_n-Y_{n-1}|\leq K\ \forall\ n<T$.
+	\item $T$ is finite \underline{and} $\expect(|Y_T|)<\infty$ \underline{and} $\expect(Y_n\mathds{1}_{T>n})\xrightarrow{n\to\infty}0$.
+\end{enumerate}
+
+\theorem{Martingale Convergence Theorem - Discrete Time}
+Let $Y:=\{Y_n\}_{n\in\nats}$ be a \textit{Supermartingale} wrt $\sigmafield_n$. Suppose there exists $A>0$ st $\expect(|Y_n|)\leq A\ \forall\ n\in\nats$. Then $\exists\ rv\ Y_\infty$ st $\prob\left(\lim_{n\to\infty}Y_n=Y_\infty\right)=1$.\\
+
+\proposition{Gambler's Ruin - Application}
+Let $X_1,X_2,\dots$ be iid rv st $\prob(X_i=1)=p\ \&\ \prob(X_i=-1)=q:=1-p$. Define $S_0=k\ \&\ S_n=S_{n-1}+X_n$, then $\{S_n\}_{n\in\nats}$ is an unrestricted random walk. Let $T:=\min\{n:S_n=0\ \mathrm{or}\ S_n=N\}$, then $\{Y_n\}_{n\in\nats}$ is a random walk with absorbing barries at $0\ \&\ N$.
+\begin{itemize}
+	\item[$p=q$]$Y:=\{Y_n\}_{n\in\nats}$ is a martingale wrt $\sigmafield_n:=\sigma(X_1,\dots,X_n)$.\\ The following properties hold
+\begin{enumerate}
+	\item $\prob(T<\infty)=1$.
+	\item $\prob(Y_T=N)=\frac{Y_0}{N}$.
+	\item $\expect(T)=k(N-k)$.
+\end{enumerate}
+	\item[$p\neq q$]Define $B_n=\left(\frac{q}{p}\right)^{Y_n}$. Then $\{V_n\}_{n\in\nats}$ is a martingale wrt $\sigmafield_n:=\sigma(X_1,\dots,X_n)$.\\ The following properties hold
+	\begin{enumerate}
+		\item $\prob(T<\infty)=1$.
+		\item $\prob(Y_T=N)=\frac{1-\left(\frac{q}{p}\right)^k}{1-\left(\frac{q}{p}\right)^N}$.
+	\end{enumerate}
+\end{itemize} 
+
+\proposition{Brownian Motion - Application}
+Let $W:=\{W_t\}_{t\geq0}$ be a \textit{Standard Brownian Motion} wrt $\sigma_t:=\sigma(W_1,\dots,W_t)$. Then
+\begin{enumerate}
+	\item $W_t$ is a martingale.
+	\item $W_t^2-t$ is a martingale.
+	\item $X_t:=at+\sigma W_t$ is a martingale iff $a=0$.
+	\item $X_t:=e^{at+\sigma W_t}$ is a martingale iff $a=-\frac{1}{2}\sigma^2$.
+\end{enumerate}
+Let $a,b>0$ and define $\tau:=\min\{t\geq0:W_t\in\{a,-b\}\}$ then $\prob(W_\tau=a)=\frac{b}{a+b}$ and $\expect(\tau)=ab$.\\
+Let $X_t:=\mu t+\sigma W_t$ with $\mu<0$ \& define $M:=\max_{t\geq0} X_t$. For $a,b>0$ then
+$$\prob(\tau_a<\tau_{-b})=\frac{1-e^{-\alpha b}}{e^{\alpha a}-e^{-\alpha b}}\ \mathrm{with}\ \alpha:=-\frac{2\mu}{\sigma^2}.\ \mathrm{Thus}\ \prob(M\geq a)=e^{-\alpha a}$$
+
+\newpage
+\setcounter{section}{-1}
+\section{Reference}
+
+\subsection{Definitions}
+
+\definition{Equivalence Relation}
+A process is an \textit{Equivalence Relation} if it is: Reflexive ($a=a$); symmetric ($a=b\implies b=a$); and, Transitive ($a=b,\ b=c\implies a=c$).\\
+
+\definition{Lack of Memory Property}
+A random variable $X$ is said to have the \textit{Lack of Memory Property} if
+$$\prob(X>t+h|T>h)=\prob(T>h)$$
+
+\definition{Positive Definite Matrix}
+A \textit{Positive Definite Matrix} is a matrix with strictly positive eigenvalues. A positive-definite matrix $A$ can be defined as $A=P^{-1}DP$ where $D$ is a diagonal matrix \& $P$ is a \textit{unitary matrix}.\\
+
+\definition{Stochastic Matrix}
+A matrix $M$ is a \textit{Stochastic Matrix} if $[M]_{ij}\geq0\forall\ i,j\in[1,n]\ \&\ \sum_{j=1}^nM_{ij}=1\ \forall\ i\in[1,n]$.
+
+\subsection{Notation}
+
+\notation{Transition Probabilities}
+For a \textit{Time-Homogenous Stochastic Process} we define \textit{Transition Probabilities} as
+\[\begin{array}{rcl}
+p_{ij}&:=&\prob(X_1=j|X_0=i)=\prob(X_{n+1}=j|X_n=i)\\
+p_{ij}(n)&:=&\prob(X_n=j|X_0=i)
+\end{array}\]
+
+\notation{Stopped}
+Let $Y:=\{Y_n\}_{n\in\nats}$ be a stochastic process. Let $T$ be a stopping time of $Y$. Then
+$$Y_{T\wedge n}:=\begin{cases}Y_n&\mathrm{for}\ n\leq t\\Y_T&\mathrm{for}\ n>t\end{cases}$$
+
+\subsection{Theorems}
+
+\theorem{Cauchy-Schwarz Inequaility}
+Let $X\ \& Y$ be random variables with finite variance. Then
+$$\expect(|XY|)\leq\sqrt{\expect(X^2)\expect(Y^2)}$$
+
+\theorem{Central Limit Theorem}
+Let $X_1,X_2,\dots$ be iid rb with $\mu=\expect(X)$ \& $\sigma^2=Var(X)\neq0$. Then
+$$Z_n=\frac{1}{\sigma\sqrt{n}}\sum_{i=1}^n(X_i-\mu)\sim \mathcal{N}(0,1)$$
+
+\theorem{Equating Exponential \& Binomial Distribution}
+For an event that occurs at time $T\sim\mathrm{Exp}(\lambda)$ then $\prob(T<t)=1-e^{-\lambda t}\simeq\lambda t$ (for small $\lambda t$). For $n$ of these events (with the same distribution) the number of events that occur before time $t$ is modelled by $N\sim\mathrm{Bi}(n,\lambda t)$.\\
+
+\theorem{Jensen's Inequailities}
+Let $g$ be a \textit{Convex Function}. Then
+$$\expect(g(X))\geq g(\expect(X))$$
+Let $g$ be a \textit{Concave Function}. Then
+$$\expect(g(X))\leq g(\expect(X))$$
+
+\theorem{Markov's Inequaility}
+Let $X$ be a non-negative random variable. Then
+$$\prob(X>c)\leq\frac{\expect(X)}{c}\ \forall\ c>0$$
+
+\theorem{One-Step Conditioning Argument}
+Let $A$ be an event that is depependent on the events $X$ \& $Y$. Then
+$$\prob(A)=\prob(A|X)\prob(X)+\prob(A|Y)\prob(Y)$$
+
+\newpage
+\subsection{Probability Distributions}
+
+\definition{Binomial Distribution}
+Let $X$ be a discrete random variable modelled by a \textit{Binomial Distribution} with $n$ events and rate of success $p$.\\
+\[\begin{array}{rcl}
+p_X(k)&=&{n\choose k}p^k(1-p)^{n-k}\\
+\expect(X)np=&\&&Var(X)=np(1-p)
+\end{array}\]
+
+\definition{Gamma Distribution}
+Let $T$ be a continuous randmo variable modelled by a \textit{Gamma Distribution} with shape parameter $\alpha$ \& scale parameter $\lambda$. Then
+\[\begin{array}{rcll}
+f_T(x)&=&\dfrac{\lambda^\alpha x^{\alpha-1}e^{-\lambda x}}{\Gamma(\alpha)}&\mathrm{for\ }x>0\\
+\expect(T)=\dfrac{\alpha}{\lambda}&\&&Var(T)=\dfrac{\alpha}{\lambda^2}
+\end{array}\]
+\nb $\alpha,\lambda>0$.\\
+
+\definition{Exponential Distribution}
+Let $T$ be a continuous random variable modelled by a \textit{Exponential Distribution} with parameter $\lambda$. Then
+\[\begin{array}{rcll}
+f_T(t)&=&\lambda e^{-\lambda t}&\mathrm{for\ }t>0\\
+F_T(t)&=&1-e^{-\lambda t}&\mathrm{for\ }t>0\\
+\expect(X)=\frac{1}{\lambda}&\&&Var(X)=\frac{1}{\lambda^2}
+\end{array}\]
+\nb Exponential Distribution is used to model the wait time between decays of a radioactive source.\\
+
+\definition{Normal Distribution}
+Let $X$ be a continuous random variable modelled by a \textit{Normal Distribution} with mean $\mu$ \& variance $\sigma^2$.\\
+Then
+\[\begin{array}{rcl}
+f_X(x)&=&\dfrac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\\
+F_X(x)&=&\dfrac{1}{\sqrt{2\pi\sigma^2}}\int\limits_{-\infty}^xe^{-\frac{(y-\mu)^2}{2\sigma^2}}dy\\
+M_X(\theta)&=&e^{\mu\theta+\sigma^2\theta^2(1/2)}\\
+\expect(X)=\mu&\&&Var(X)=\sigma^2
+\end{array}\]
+
+\definition{Poisson Distribution}
+Let $X$ be a discrete random variable modelled by a \textit{Poisson Distribution} with parameter $\lambda$. Then
+\[\begin{array}{rcll}
+p_X(k)&=&\dfrac{e^{-\lambda}\lambda^k}{k!}&\mathrm{For\ }k\in\nats_0\\
+\expect(X)=\lambda&\&&Var(X)=\lambda
+\end{array}\]
+\nb Poisson Distribution is used to model the number of radioactive decays in a time period.\\
+
+\end{document}
